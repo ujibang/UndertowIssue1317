@@ -33,7 +33,7 @@ public class Server implements HttpHandler {
         this.server = Undertow.builder()
                 .addHttpListener(8080, "localhost")
                 .setHandler(paths).build();
-        
+
         this.server.start();
     }
 
@@ -42,9 +42,15 @@ public class Server implements HttpHandler {
         System.out.println("************* relative path: ".concat(hse.getRelativePath()));
         System.out.println(("************* request path: ".concat(hse.getRequestPath())));
 
-        String predicate1 = "path[/foo]";
+        String predicate1 = "path[/one/foo]";
 
         Predicate p1 = PredicateParser.parse(predicate1, this.getClass().getClassLoader());
+
+        // Predicate.resolve() uses getRelativePath()
+        // that is the path relative to the last PathHandler
+        // We want to check against the full request path
+        // @see https://issues.jboss.org/browse/UNDERTOW-1317
+        hse.setRelativePath(hse.getRequestPath());
 
         if (p1.resolve(hse)) {
             hse.setStatusCode(200);

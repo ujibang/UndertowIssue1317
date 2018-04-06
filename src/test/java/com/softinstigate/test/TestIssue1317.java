@@ -55,6 +55,6 @@ public class TestIssue1317 {
                 .get("http://localhost:8080/two/foo")
                 .asString();
 
-        Assert.assertEquals("check response", 200, resp.getStatus());
+        Assert.assertEquals("check response", 403, resp.getStatus());
     }
 }
