@@ -42,7 +42,17 @@ public class TestIssue1317 {
     @Test
     public void testIssue1317() throws UnirestException {
         HttpResponse resp = Unirest
-                .get("http://localhost:8080/_logic/test")
+                .get("http://localhost:8080/one/foo")
+                .asString();
+
+        Assert.assertEquals("check response", 200, resp.getStatus());
+    }
+    
+    
+    @Test
+    public void testIssue1317Relative() throws UnirestException {
+        HttpResponse resp = Unirest
+                .get("http://localhost:8080/two/foo")
                 .asString();
 
         Assert.assertEquals("check response", 200, resp.getStatus());
